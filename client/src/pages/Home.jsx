@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from 'react';
 import PostDetails from "../components/PostDetails";
+import PostForm from "../components/PostForm";
 
 function Home() {
 
@@ -12,7 +13,6 @@ function Home() {
             const json = await response.json();
             if(response.ok) {
                 setPosts(json);
-                console.log(posts);
             }
         }
 
@@ -26,6 +26,7 @@ function Home() {
                     <PostDetails key={post._id} post={post} />
                 ))}
             </div>
+            <PostForm />
         </div>
     )
 }
