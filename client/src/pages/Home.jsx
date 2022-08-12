@@ -2,17 +2,18 @@ import React from "react";
 import { useEffect, useState } from 'react';
 import PostDetails from "../components/PostDetails";
 import PostForm from "../components/PostForm";
+import { usePostsContext } from "../hooks/usePostsContext";
 
 function Home() {
 
-    const [posts, setPosts] = useState(null);
+    const {posts, dispatch} = usePostsContext();
 
     useEffect(()=> {
         const fetchPosts = async()=> {
             const response = await fetch('/api/posts/');
             const json = await response.json();
             if(response.ok) {
-                setPosts(json);
+                dispatch({type: "SET_POSTS", payload: json})
             }
         }
 
