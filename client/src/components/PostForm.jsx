@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { usePostsContext } from "../hooks/usePostsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function PostForm(props) {
 
@@ -10,16 +11,24 @@ function PostForm(props) {
     const [author, setAuthor] = useState('');
     const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([]);
+    const { user } = useAuthContext();
 
     const handleSubmit = async (e)=> {
         e.preventDefault()
+
+        if(!user) {
+            setError('You Must be Logged In')
+            return
+        }
+
         const Post = {title, content, author}
 
         const response = await fetch('/api/posts', {
             method: 'POST',
             body: JSON.stringify(Post),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
 

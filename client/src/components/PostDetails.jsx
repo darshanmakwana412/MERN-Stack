@@ -1,13 +1,23 @@
 import React from "react";
 import { usePostsContext } from "../hooks/usePostsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function PostDetails(props) {
 
     const { dispatch } = usePostsContext();
+    const { user } = useAuthContext();
 
     const handleClick = async ()=> {
+
+        if(!user) {
+            return
+        }
+
         const response = await fetch('/api/posts/'+props.post._id, {
-            method:"DELETE"
+            method:"DELETE",
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         });
         const json = await response.json();
 
